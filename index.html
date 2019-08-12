@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>CSS Variables and JS</title>
+  </head>
+
+  <body>
+    <h2>Update CSS Variables with <span class="highlight">JS</span></h2>
+
+    <section class="controls">
+      <!-- The range type creates a cursor that can be moved along a line -->
+      <!-- The color type creates a Color Palette -->
+      <label>Spacing:</label>
+      <input
+        type="range"
+        data-sizing="px"
+        name="spacing"
+        value="100"
+        min="0"
+        max="200"
+      />
+      <label>Blur:</label>
+      <input
+        type="range"
+        data-sizing="px"
+        name="blur"
+        value="2"
+        min="0"
+        max="25"
+      />
+      <label>Background Color</label>
+      <input type="color" name="color" value="#ffc600" />
+    </section>
+
+    <img
+      src="https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"
+    />
+
+    <style>
+      /* Create the CSS variables with default values */
+      :root {
+        --color: #ffc600;
+        --spacing: 100px;
+        --blur: 2px;
+      }
+
+      /* Apply those CSS variables to the image and some css classes */
+      img {
+        padding: var(--spacing);
+        background-color: var(--color);
+        filter: blur(var(--blur));
+        height: 50vh;
+      }
+
+      .highlight {
+        color: var(--color);
+      }
+
+      body {
+        text-align: center;
+        background: #03233a;
+        color: rgb(243, 243, 243);
+        font-family: 'helvetica neue', sans-serif;
+        font-weight: 100;
+        font-size: 2rem;
+      }
+
+      input {
+        width: 100px;
+      }
+
+      .controls {
+        margin-bottom: 50px;
+        color: rgb(185, 185, 185);
+      }
+    </style>
+
+    <script>
+      //this query works only with CSS selectors (html tags, classes, id)
+      const inputs = document.querySelectorAll('input');
+
+      function handleUpdate() {
+        // check for the inputs which have data-sizing or none, like the color
+        const suffix = this.dataset.sizing || '';
+        //update the style by giving a new value to the CSS variable
+        document.documentElement.style.setProperty(
+          `--${this.name}`,
+          this.value + suffix,
+        );
+      }
+
+      //the event listener will define the "this" to be updated based on clicked and on mousemove
+      inputs.forEach(input => input.addEventListener('change', handleUpdate));
+      inputs.forEach(input =>
+        input.addEventListener('mousemove', handleUpdate),
+      );
+    </script>
+  </body>
+</html>
